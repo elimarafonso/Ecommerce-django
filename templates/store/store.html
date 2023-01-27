@@ -135,14 +135,15 @@
 				<a href="{{ prod.get_url }}">	<img src="{{ prod.images.url }}"></a>
 
 				</div> <!-- img-wrap.// -->
-				<figcaption class="info-wrap">
+				<figcaption class="info-wrap text-center ">
 					<div class="fix-height">
 						<a href="{{ prod.get_url }}" class="title">{{ prod.product_name }}</a>
 						<div class="price-wrap mt-2">
 							<span class="price">R$ {{ prod.price }}</span>
 						</div> <!-- price-wrap.// -->
 					</div>
-					<a href="#" class="btn btn-block btn-primary">Comprar </a>
+					<a href="{{ prod.get_url }}" class=" btn btn-block  btn-outline-primary"> <span class="text"> Conferir </span> <i class="fas fa-eye"></i>  </a>
+
 				</figcaption>
 			</figure>
 		</div> <!-- col.// -->

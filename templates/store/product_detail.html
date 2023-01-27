@@ -79,7 +79,14 @@
 
 
 	{% else %}
-		<a href="./product-detail.html" class="btn  btn-primary"> <span class="text">Comprar</span> <i class="fas fa-shopping-cart"></i>  </a>
+		{% if in_cart %}
+			<!-- JÁ ESTA NO CARRINHO ? -->
+			<a href="#" class="btn  btn-success"> <span class="text"> Está no carrinho </span> <i class="fas fa-check"></i>  </a>
+			<a href="{% url 'cart' %}" class="btn  btn-outline-primary"> <span class="text"> Ver meu carrinho </span> <i class="fas fa-eye"></i>  </a>
+		{% else %}
+			<!-- SE NÃO ESTA NO CARRINHO PODE ADICIONAR O PRODUTO -->
+			<a href="{% url 'add_cart' product.id %}" class="btn  btn-primary"> <span class="text">Comprar</span> <i class="fas fa-shopping-cart"></i>  </a>
+		{% endif %}
 	{% endif %}
 </article> <!-- product-info-aside .// -->
 		</main> <!-- col.// -->

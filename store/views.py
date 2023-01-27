@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic.base import TemplateView
 
+import carts.views
 from category.models import Category
+from carts.models import CartItem, Cart
 from .models import Product
 
 
@@ -38,12 +40,13 @@ class ProductDetailView(TemplateView):
         product_slug = kwargs.get('product_slug')
         try:
             single_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
+            in_cart = CartItem.objects.filter(product=single_product, cart__cart_id=carts.views._cart_id(self.request)).exists()
         except Exception as e:
             raise e
 
         context['product'] = single_product
+        context['in_cart'] = in_cart
         return context
-
 
 
 
