@@ -67,27 +67,31 @@
 		</div>
 	</div> <!-- row.// -->
 	<hr>
+	<!-- CASO O PRODUTO NÃO TENHA ESTOQUE-->
 	{% if product.stock <= 0 %}
-		<h4> <b class="text-danger">Produto esgotado! </b></h4>
-	<form class="form-inline">
-
-	  <div class="form-group mx-sm-3 mb-2">
-			<input type="text" class="form-control" id="" placeholder="name@example.com">
-	  </div>
-	  <button type="submit" class="btn btn-primary mb-2">Me avise</button>
-	</form>
-
-
+	<div class="text-center">
+			<h4> <b class="text-danger">Produto esgotado! </b></h4>
+			<form>
+				  <div class="form-group">
+					<input type="email" class="form-control"   placeholder="exemplo@exemplo.com">
+					<small id="emailHelp" class="form-text text-muted">Te avisamos quando este produto estiver disponível.</small>
+				  </div>
+					  <button type="submit" class="btn btn-block  btn-primary mb-2">Me avise</button>
+			</form>
+	</div>
 	{% else %}
-		{% if in_cart %}
-			<!-- JÁ ESTA NO CARRINHO ? -->
-			<a href="#" class="btn  btn-success"> <span class="text"> Está no carrinho </span> <i class="fas fa-check"></i>  </a>
-			<a href="{% url 'cart' %}" class="btn  btn-outline-primary"> <span class="text"> Ver meu carrinho </span> <i class="fas fa-eye"></i>  </a>
-		{% else %}
-			<!-- SE NÃO ESTA NO CARRINHO PODE ADICIONAR O PRODUTO -->
-			<a href="{% url 'add_cart' product.id %}" class="btn  btn-primary"> <span class="text">Comprar</span> <i class="fas fa-shopping-cart"></i>  </a>
+
+			{% if in_cart %}
+				<!-- JÁ ESTA NO CARRINHO ? -->
+				<a href="#" class="btn btn-lg btn-success"> <span class="text"> Está no carrinho </span> <i class="fas fa-check"></i>  </a>
+				<a href="{% url 'cart' %}" class="btn btn-lg btn-outline-primary"> <span class="text"> Ver meu carrinho </span> <i class="fas fa-eye"></i>  </a>
+			{% else %}
+				<!-- SE NÃO ESTA NO CARRINHO PODE ADICIONAR O PRODUTO -->
+				<a href="{% url 'add_cart' product.id %}" class="btn btn-lg  btn-primary"> <span class="text">Comprar</span> <i class="fas fa-shopping-cart"></i>  </a>
+			{% endif %}
 		{% endif %}
-	{% endif %}
+
+
 </article> <!-- product-info-aside .// -->
 		</main> <!-- col.// -->
 	</div> <!-- row.// -->
