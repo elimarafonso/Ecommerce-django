@@ -1,0 +1,12 @@
+{% load static %}
+
+      <div>
+                <p class="fs-3"> <span class="text-danger">Opps!</span> poxa, nenhum resultado encontrado para.<strong>"{{ search_key }}"</strong></p>
+                    <ul >
+                        <li>Confira se o termo foi digitado certinho;</li>
+                        <li>Use menos palavras ou termos menos específicos;</li>
+                        <li>Tente outro produto ou navegue pelos departamentos <br> para encontrar o que você precisa.</li>
+                    </ul>
+
+                <a href="{% url 'store' %}"  class=" btn btn-block  btn-outline-primary">voltar</a>
+        </div>
