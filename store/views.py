@@ -22,7 +22,7 @@ class StoreView(TemplateView):
 
             products_by_category = Product.objects.all().filter(category=categories, is_available=True).order_by('id')
             # paginando produtos por categorias
-            paginator = Paginator(products_by_category, 1)
+            paginator = Paginator(products_by_category, 5)
             page = self.request.GET.get('page')
             paged_products = paginator.get_page(page)
             context['products'] = paged_products

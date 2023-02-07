@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic.base import TemplateView
-from store.models import Product
+from store.models import Product, Variation
 from .models import Cart, CartItem
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -46,6 +46,18 @@ def _cart_id(request):
 
 def add_cart(request, product_id):
     product = Product.objects.get(id=product_id)
+    product_list_variation = []
+    if request.method == 'POST':
+        for item in request.POST:
+            key = item
+            value = request.POST[key]
+            try:
+                variation = Variation.objects.get(product=product, variation_category__iexact=key,
+                                                  variation_value__iexact=value)
+                product_list_variation.append(variation)
+            except:
+                pass
+
     try:
         # verifica no banco se tem um carrinho com a sessão atual
         # caso não tenha cria uma nova sessao e um novo carrinho de compras
@@ -55,38 +67,77 @@ def add_cart(request, product_id):
             cart_id=_cart_id(request),
         )
     cart.save()
-    try:
-        # PRIMEIRO ELE VERIFICA NO BANCO SE JÁ EXISTE ESTE PRODUTO PARA ESTE CARRINHO
-        # CASO NÃO TENHA, INSERE O PRODUTO NO CARRINHO DE COMPRAS
-        cart_item = CartItem.objects.get(product=product, cart=cart)
-        cart_item.quantity += 1
-        cart_item.save()
-    except CartItem.DoesNotExist:
+
+    is_cart_items_exists = CartItem.objects.filter(product=product, cart=cart).exists()
+
+    if is_cart_items_exists:
+        cart_item = CartItem.objects.filter(product=product, cart=cart)
+        # existe variação deste produto  ? -> no banco
+        # variação atual do produto - > product_variation
+        # item_id -> Banco
+        exist_variation_list = []
+        id = []
+
+        for item in cart_item:
+            exist_variation = item.variations.all()
+            exist_variation_list.append(list(exist_variation))
+            id.append(item.id)
+
+        if product_list_variation in exist_variation_list:
+            # incrementa a quantidade do item
+            index = exist_variation_list.index(product_list_variation)
+            item_id = id[index]
+            item = CartItem.objects.get(product=product, id=item_id)
+            item.quantity += 1
+            item.save()
+
+        else:
+            # cria um novo produto com variaçao diferente
+            item = CartItem.objects.create(product=product, quantity=1, cart=cart)
+            if len(product_list_variation) > 0:
+                item.variations.clear()
+                item.variations.add(*product_list_variation)
+            item.save()
+    else:
         cart_item = CartItem.objects.create(
             product=product,
             quantity=1,
             cart=cart,
         )
+
+        if len(product_list_variation) > 0:
+            cart_item.variations.clear()
+            cart_item.variations.add(*product_list_variation)
         cart_item.save()
 
     return redirect('cart')
 
-# SUBTRAINDO UM ITEM DO CARRINHO AO PRECIONAR O BOTAO ' - (MENOS)'
-def remove_cart(request, product_id):
+
+def remove_cart(request, product_id, cart_item_id):
+    # SUBTRAINDO UM ITEM DO CARRINHO AO PRECIONAR O BOTAO ' - (MENOS)'
+
     cart = Cart.objects.get(cart_id=_cart_id(request))
     product = get_object_or_404(Product, id=product_id)
-    cart_item = CartItem.objects.get(cart=cart, product=product)
-    if cart_item.quantity > 1:
-        cart_item.quantity -= 1
-        cart_item.save()
-    else:
+    try:
+        cart_item = CartItem.objects.get(cart=cart, product=product, id=cart_item_id)
+        if cart_item.quantity > 1:
+            cart_item.quantity -= 1
+            cart_item.save()
+        else:
+            cart_item.delete()
+    except:
+        pass
+
+    return redirect('cart')
+
+
+def remove_cart_item(request, product_id, cart_item_id=None):
+    # REMOVENDO UM ITEM DO CARRINHO PELO BOTÃO
+    cart = Cart.objects.get(cart_id=_cart_id(request))
+    product = get_object_or_404(Product, id=product_id)
+    cart_item = CartItem.objects.get(cart=cart, product=product, id=cart_item_id)
+    try:
         cart_item.delete()
-    return redirect('cart')
-
-# REMOVENDO UM ITEM DO CARRINHO PELO BOTÃO
-def remove_cart_item(request, product_id):
-    cart = Cart.objects.get(cart_id=_cart_id(request))
-    product = get_object_or_404(Product, id=product_id)
-    cart_item = CartItem.objects.get(cart=cart, product=product)
-    cart_item.delete()
+    except:
+        pass
     return redirect('cart')

@@ -1,0 +1,38 @@
+{% load static %}
+
+
+
+<!--
+veja que no titulo mostra so uma linha e
+fica esperto com as tags alt="" e title""
+quando passa o mouse mostra a descrição completa. e o alt é quando a imagem n for carregada
+-->
+<h2><b>PRRODUTOS</b> EM DESTAQUE</h2>
+<div class="slider js-slider" >
+  	{% for prod in products %}
+
+            <div class="card">
+            <div class="like" title="Adicionar aos favoritos">    </div>
+            <div class="image-product">
+                <a href="{{ prod.get_url }}">
+                    <img class="product" src="{{ prod.images.url }}" alt="{{ prod.product_name }}"  title="{{ prod.product_name }}" />
+                </a>
+            </div>
+            <h4 class="title" >{{ prod.product_name }} </h4>
+
+            <div class="rating">
+                &#9733;
+                &#9733;
+                &#9733;
+                &#9734;
+                &#9734;
+            </div>
+                <div class="price">
+                    <h5 class="oldPrice"> R$ {{ prod.price }}</h5>
+                    <h5 class="newPrice"> R$ {{ prod.price  }}</h5>
+                </div>
+                <a class="button" href="{{ prod.get_url }}" >Conferir</a>
+        </div>
+       {% endfor %}
+</div>
+

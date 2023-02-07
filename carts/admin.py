@@ -5,9 +5,10 @@ from .models import Cart, CartItem
 
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
-    list_display = ()
+    list_display = ('cart_id', 'date_added')
 
 
 @admin.register(CartItem)
 class CartItem(admin.ModelAdmin):
-    list_display = ()
+    list_display = ('product',  'cart', 'quantity', 'is_active')
+

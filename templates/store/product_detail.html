@@ -16,83 +16,74 @@
 </article> <!-- gallery-wrap .end// -->
 		</aside>
 		<main class="col-md-6 border-left">
-<article class="content-body">
-
-<h2 class="title">{{ product.product_name }}</h2>
-
-<div class="mb-3">
-	<var class="price h4">R$ {{ product.price }}</var>
-</div>
-
-<p> {{ product.description }} </p>
 
 
-<hr>
-	<div class="row">
-		<div class="item-option-select">
-			<h6>Cor</h6>
-			<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-			  <label class="btn btn-light">
-			    <input type="radio" name="radio_color"> Cinza
-			  </label>
-			  <label class="btn btn-light">
-			    <input type="radio" name="radio_color" > Verde
-			  </label>
-			  <label class="btn btn-light active">
-			    <input type="radio" name="radio_color checked"> Amarelo
-			  </label>
-			  <label class="btn btn-light">
-			    <input type="radio" name="radio_color"> Preto
-			  </label>
-			</div>
+<form action="{% url 'add_cart' product.id %}" method="POST">
+	{% csrf_token %}
+		<article class="content-body">
+
+		<h2 class="title">{{ product.product_name }}</h2>
+
+		<div class="mb-3">
+			<var class="price h4">R$ {{ product.price }}</var>
 		</div>
-	</div> <!-- row.// -->
-	<div class="row">
-		<div class="item-option-select">
-			<h6>Tamanho</h6>
-			<div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-			  <label class="btn btn-light">
-			    <input type="radio" name="radio_color"> P
-			  </label>
-			  <label class="btn btn-light active">
-			    <input type="radio" name="radio_color" checked> M
-			  </label>
-			  <label class="btn btn-light">
-			    <input type="radio" name="radio_color"> G
-			  </label>
-			  <label class="btn btn-light">
-			    <input type="radio" name="radio_color"> GG
-			  </label>
-			</div>
-		</div>
-	</div> <!-- row.// -->
-	<hr>
-	<!-- CASO O PRODUTO NÃO TENHA ESTOQUE-->
-	{% if product.stock <= 0 %}
-	<div class="text-center">
-			<h4> <b class="text-danger">Produto esgotado! </b></h4>
-			<form>
-				  <div class="form-group">
-					<input type="email" class="form-control"   placeholder="exemplo@exemplo.com">
-					<small id="emailHelp" class="form-text text-muted">Te avisamos quando este produto estiver disponível.</small>
-				  </div>
-					  <button type="submit" class="btn btn-block  btn-primary mb-2">Me avise</button>
-			</form>
-	</div>
-	{% else %}
 
-			{% if in_cart %}
-				<!-- JÁ ESTA NO CARRINHO ? -->
-				<a href="#" class="btn btn-lg btn-success"> <span class="text"> Está no carrinho </span> <i class="fas fa-check"></i>  </a>
-				<a href="{% url 'cart' %}" class="btn btn-lg btn-outline-primary"> <span class="text"> Ver meu carrinho </span> <i class="fas fa-eye"></i>  </a>
+		<p> {{ product.description }} </p>
+
+
+		<hr>
+			<div class="row">
+				<div class="item-option-select">
+					{% if product.variation_set.colors  %}
+					<h6>Cor</h6>
+					<select name="cor" class="form-control" required title="Selecione uma cor" >
+					 		<option value="" disabled selected>Escolha uma cor</option>
+						{% for i in product.variation_set.colors  %}
+							<option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+						{% endfor %}
+					</select>
+					{% endif %}
+				</div>
+			</div> <!-- row.// -->
+			<div class="row">
+				<div class="item-option-select">
+					{% if product.variation_set.sizes  %}
+						<h6>Tamanho</h6>
+						<select name="tamanho" class="form-control" required title="Selecione um tamanho">
+							<option value="" disabled selected>Escolha um tamanho</option>
+							{% for i in product.variation_set.sizes %}
+								<option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+							{% endfor %}
+						</select>
+					{% endif %}
+				</div>
+			</div> <!-- row.// -->
+			<hr>
+			<!-- CASO O PRODUTO NÃO TENHA ESTOQUE-->
+			{% if product.stock <= 0 %}
+			<div class="text-center">
+					<h4> <b class="text-danger">Produto esgotado! </b></h4>
+					<form>
+						  <div class="form-group">
+							<input type="email" class="form-control"   placeholder="exemplo@exemplo.com">
+							<small id="emailHelp" class="form-text text-muted">Te avisamos quando este produto estiver disponível.</small>
+						  </div>
+							  <button type="submit" class="btn btn-block  btn-primary mb-2">Me avise</button>
+					</form>
+			</div>
 			{% else %}
-				<!-- SE NÃO ESTA NO CARRINHO PODE ADICIONAR O PRODUTO -->
-				<a href="{% url 'add_cart' product.id %}" class="btn btn-lg  btn-primary"> <span class="text">Comprar</span> <i class="fas fa-shopping-cart"></i>  </a>
+						<!-- SE POSUSI ESTOQUE PODE ADICIONAR NO CARRINHO -->
+						<button type="submit" class="btn btn-lg  btn-primary"> <span class="text">Comprar</span> <i class="fas fa-shopping-cart"></i>  </button>
+						<a  href="{% url 'cart' %}"  class="btn btn-lg btn-success"> <span class="text"> Ver meu carrinho </span> <i class="fas fa-eye"></i>  </a>
 			{% endif %}
-		{% endif %}
 
 
-</article> <!-- product-info-aside .// -->
+		</article>
+
+	</form>
+
+			<!-- product-info-aside .// -->
+
 		</main> <!-- col.// -->
 	</div> <!-- row.// -->
 </div> <!-- card.// -->
