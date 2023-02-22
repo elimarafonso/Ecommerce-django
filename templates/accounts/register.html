@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- ============================ COMPONENT REGISTER   ================================= -->
+	<div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+      <article class="card-body">
+			<!-- MENSAGENS DA PAGINA START -->
+		  	{% include 'includes/alert.html'%}
+			<!-- MENSAGENS DA PAGINA ENDS -->
+
+		<header class="mb-4"><h4 class="card-title">Faça seu cadastro</h4></header>
+		<form action="{% url 'register' %}" method="POST" class="form-group">
+				{% csrf_token %}
+			<!-- formulário de registro de clientes start -->
+
+		 	<div class="form-row">
+					<div class="col form-group">
+				<small class="form-text text-muted"><font color="red"> 		{{ form.first_name.errors }}</font></small>
+						<label for="{{ form.first_name.id_for_label }}">Primeiro Nome</label>
+						{{ form.first_name }}
+					</div> <!-- form-group end.// -->
+					<div class="col form-group">
+					<small class="form-text text-muted"><font color="red"> 	{{ form.last_name.errors }}</font></small>
+						<label for="{{ form.last_name.id_for_label }}">Segundo nome</label>
+						{{ form.last_name }}
+					</div> <!-- form-group end.// -->
+			</div> <!-- form-row end.// -->
+			<div class="form-row">
+					<div class="col form-group">
+						<small class="form-text text-muted"><font color="red">  {{ form.docCPF.errors }} </font></small>
+						<label for="{{form.docCPF.id_for_label }}">CPF</label>
+						{{ form.docCPF }}
+					</div> <!-- form-group end.// -->
+					<div class="col form-group">
+					<small class="form-text text-muted"> <strong> <font color="red"> 	{{ form.phone_number.errors }} </font> </strong></small>
+						<label for="{{ form.phone_number.id_for_label }}">Telefone</label>
+						{{ form.phone_number }}
+					</div> <!-- form-group end.// -->
+			</div> <!-- form-row end.// -->
+		    <div class="form-group">
+						<small class="form-text text-muted"> <strong> <font color="red">  {{ form.email.errors }} </font> </strong></small>
+					<label for="{{ form.email.id_for_label }}">Email</label>
+					{{ form.email }}
+					<small class="form-text text-muted">digite seu melhor e-mail</small>
+
+			</div> <!-- form-group end.// -->
+
+			<div class="form-row">
+					<div class="form-group col-md-6">
+						<small class="form-text text-muted"> <strong> <font color="red"> {{ form.password.errors }} </font> </strong></small>
+						<label for="{{ form.password.id_for_label }}">Create password</label>
+						{{ form.password }}
+					</div> <!-- form-group end.// -->
+					<div class="form-group col-md-6">
+						<label>Confirme sua senha</label>
+						{{ form.confirm_password }}
+					</div> <!-- form-group end.// -->
+				<small class="form-text text-muted"> <strong> <font color="red"> {{ form.non_field_errors }} </font> </strong></small>
+			</div>
+			    <div class="form-group">
+			        <button type="submit" class="btn btn-primary btn-block"> Finalizar cadastro  </button>
+			    </div> <!-- form-group// -->  <!-- form-group// -->
+		</form>
+					<!-- formulário de registro de clientes ENDS -->
+
+		</article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <p class="text-center mt-4">Já possui uma conta? <a href="">Entrar</a></p>
+    <br><br>
+<!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+
+{% endblock %}

@@ -32,6 +32,7 @@ class MyAccountManager(BaseUserManager):
 
     def create_user(self,  email, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', False)
+        extra_fields.setdefault('is_staff', False)
         return self._create_user(email,  password, **extra_fields)
 
     def create_superuser(self,  email, password, **extra_fields):
@@ -49,6 +50,8 @@ class MyAccountManager(BaseUserManager):
 class Account(AbstractUser):
     first_name = models.CharField('Primeiro Nome', max_length=50)
     last_name = models.CharField('Segundo Nome', max_length=50)
+    docCPF = models.IntegerField('CPF', unique=True)
+    docCNPJ = models.IntegerField('CNPJ', default=0)
     email = models.EmailField('E-mail', max_length=100, unique=True)
     phone_number = models.CharField('Telefone:', max_length=15)
     is_staff = models.BooleanField('Pode acessar a Administração?', default=True)
@@ -56,7 +59,7 @@ class Account(AbstractUser):
 
     USERNAME_FIELD = 'email'
     # caso queira mais atributos é só adicionar o campo e aqui
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number', 'docCPF']
 
     def __str__(self):
         return self.email

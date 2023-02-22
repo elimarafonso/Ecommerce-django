@@ -89,9 +89,13 @@ $(document).ready(function() {
     });
 
 
-    
 });
-
-
 // jquery end
+
+// fechar o botao de catrastro com sucesso automático
+setTimeout(function(){
+    $('#message').fadeOut('slow')
+}, 4000)
+
+
 
