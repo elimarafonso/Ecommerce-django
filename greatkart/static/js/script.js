@@ -95,7 +95,7 @@ $(document).ready(function() {
 // fechar o botao de catrastro com sucesso automático
 setTimeout(function(){
     $('#message').fadeOut('slow')
-}, 4000)
+}, 7000)
 
 
 

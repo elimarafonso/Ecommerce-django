@@ -3,22 +3,40 @@
 
 
 <!-- ============================ COMPONENT LOGIN   ================================= -->
-	<div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+
+<section class="section-content padding-y" style="min-height:84vh">
+
+	{% if request.GET.command == 'verification' %}
+        <div class="container mx-auto alert alert-info text-center" role="alert" style="max-width: 50%">
+               Acesse [<strong>{{ request.GET.email }}</strong>] e clique no link de validação para concluir
+                seu cadastro.
+            <br><br>
+            Assim que concluir, Acesse sua conta: <a href="{% url 'login' %}">Clicando aqui.</a>
+
+        </div>
+
+    {% else %}
+    <div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
       <div class="card-body">
-      <h4 class="card-title mb-4">Sign in</h4>
-      <form>
-      	  <a href="#" class="btn btn-facebook btn-block mb-2"> <i class="fab fa-facebook-f"></i> &nbsp  Sign in with Facebook</a>
-      	  <a href="#" class="btn btn-google btn-block mb-4"> <i class="fab fa-google"></i> &nbsp  Sign in with Google</a>
+      <h4 class="card-title mb-4">Login do cliente</h4>
+			<!-- MENSAGENS DA PAGINA START -->
+		  	{% include 'includes/alert.html'%}
+			<!-- MENSAGENS DA PAGINA ENDS -->
+      <form action="{% url 'login' %}" method="POST">
+          {% csrf_token %}
+          <small class="form-text text-muted">  Use sua rede social para se conectar </small>
+      	  <a href="#" class="btn btn-facebook btn-block mb-2"> <i class="fab fa-facebook-f"></i> &nbsp Facebook</a>
+      	  <a href="#" class="btn btn-google btn-block mb-4"> <i class="fab fa-google"></i> &nbsp Google</a>
           <div class="form-group">
-			 <input name="" class="form-control" placeholder="Username" type="text">
+			 <input id="id_email" name="email" class="form-control" placeholder="Username" type="text">
           </div> <!-- form-group// -->
           <div class="form-group">
-			<input name="" class="form-control" placeholder="Password" type="password">
+			<input id="id_password" name="password" class="form-control" placeholder="Password" type="password">
           </div> <!-- form-group// -->
 
           <div class="form-group">
-          	<a href="#" class="float-right">Forgot password?</a>
-            <label class="float-left custom-control custom-checkbox"> <input type="checkbox" class="custom-control-input" checked=""> <div class="custom-control-label"> Remember </div> </label>
+          	<a href="{% url 'forgotPassword' %}" class="float-right">Esqueceu a senha ?</a>
+            <label class="float-left custom-control custom-checkbox"> <input type="checkbox" class="custom-control-input" checked=""> <div class="custom-control-label"> Lembrar senha </div> </label>
           </div> <!-- form-group form-check .// -->
           <div class="form-group">
               <button type="submit" class="btn btn-primary btn-block"> Login  </button>
@@ -27,8 +45,11 @@
       </div> <!-- card-body.// -->
     </div> <!-- card .// -->
 
-     <p class="text-center mt-4">Don't have account? <a href="#">Sign up</a></p>
+     <p class="text-center mt-4">Ainda não é membro? <a href="{% url 'register' %}">Registre-se</a></p>
      <br><br>
-<!-- ============================ COMPONENT LOGIN  END.// ================================= -->
 
+	{% endif %}
+</section>
+
+    <!-- ============================ COMPONENT LOGIN  END.// ================================= -->
 {% endblock %}

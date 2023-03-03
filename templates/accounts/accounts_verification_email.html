@@ -1,0 +1,11 @@
+{% autoescape off %}
+
+Seja bem vindo {{ user.first_name }} !
+
+Por favor, clique no link abaixo para ativar sua conta na Capelinha Store.
+
+http://{{domain}}{% url 'activate' uidb64=uid token=token %}
+
+Caso não seja você, ignore este e-mail!
+
+{% endautoescape %}

@@ -3,7 +3,8 @@ from django import forms
 from .models import Account
 
 from validate_docbr import CPF
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.contrib.auth import password_validation as validator
 
 '''
 FORMULÁRIO DE CRIÇÃO/EDIÇÃO DE USUÁRIOS!
@@ -31,11 +32,13 @@ class AccountChangeForm(UserChangeForm):
         fields = ('email', 'first_name', 'last_name', 'phone_number')
 
 
-######################################################################################################################################
-#
-# REGISTRO DE USUÁRIOS DO SITE
-#
-######################################################################################################################################
+#####################################
+#                                   #
+# REGISTRO DE USUÁRIOS DO SITE      #
+#                                   #
+#####################################
+
+
 class RegistrationForm(forms.ModelForm):
     # registro de usuarios
     password = forms.CharField(widget=forms.PasswordInput(attrs={
@@ -70,6 +73,8 @@ class RegistrationForm(forms.ModelForm):
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
 
+        validator.validate_password(password)
+
         if password != confirm_password:
             raise forms.ValidationError(
                 'As senhas NÃO são iguais, por favor confirme novamente'
@@ -82,6 +87,61 @@ class RegistrationForm(forms.ModelForm):
         self.fields['last_name'].widget.attrs['placeholder'] = 'Digite seu segundo nome'
         self.fields['docCPF'].widget.attrs['placeholder'] = '___.___.___-__'
         self.fields['phone_number'].widget.attrs['placeholder'] = '(DDD) X XXXX-XXXX'
-        self.fields['password'].widget.attrs['placeholder'] = 'Digite seu segundo nome'
+        self.fields['password'].widget.attrs['placeholder'] = 'Digite sua senha'
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'Digite uma senha'
+    }))
+
+
+class ForgotPasswordForm(forms.Form):
+    email = forms.EmailField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'seu email'
+    }))
+
+    class Meta:
+        model = Account
+        fields = ['email']
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+
+        try:
+            user = Account.objects.get(email__exact=email)
+            return user
+        except ObjectDoesNotExist:
+            raise forms.ValidationError(
+                'E-mail não encontrado!'
+            )
+
+class ResetPasswordForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'Digite uma senha',
+        'class': 'form-control'
+    }))
+    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'Confirme a senha',
+        'class': 'form-control'
+    }))
+
+    class Meta:
+        model = Account
+        fields = ['password']
+
+    def clean(self):
+        cleaned_data = super(ResetPasswordForm, self).clean()
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+
+        validator.validate_password(password)
+
+        if password != confirm_password:
+            raise forms.ValidationError(
+                'As senhas NÃO são iguais, por favor confirme novamente'
+            )
+

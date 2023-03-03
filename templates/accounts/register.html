@@ -48,7 +48,7 @@
 			<div class="form-row">
 					<div class="form-group col-md-6">
 						<small class="form-text text-muted"> <strong> <font color="red"> {{ form.password.errors }} </font> </strong></small>
-						<label for="{{ form.password.id_for_label }}">Create password</label>
+						<label for="{{ form.password.id_for_label }}">Digite sua senha</label>
 						{{ form.password }}
 					</div> <!-- form-group end.// -->
 					<div class="form-group col-md-6">
@@ -65,7 +65,7 @@
 
 		</article><!-- card-body.// -->
     </div> <!-- card .// -->
-    <p class="text-center mt-4">Já possui uma conta? <a href="">Entrar</a></p>
+    <p class="text-center mt-4">Já possui uma conta? <a href="{% url 'login' %}">Entrar</a></p>
     <br><br>
 <!-- ============================ COMPONENT REGISTER  END.// ================================= -->
 
