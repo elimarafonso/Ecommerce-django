@@ -14,16 +14,16 @@
 			<!-- formulário de registro de clientes start -->
 
 		 	<div class="form-row">
-					<div class="col form-group">
-				<small class="form-text text-muted"><font color="red"> 		{{ form.first_name.errors }}</font></small>
+				<div class="col form-group">
+						<small class="form-text text-muted"><font color="red"> 		{{ form.first_name.errors }}</font></small>
 						<label for="{{ form.first_name.id_for_label }}">Primeiro Nome</label>
 						{{ form.first_name }}
-					</div> <!-- form-group end.// -->
-					<div class="col form-group">
-					<small class="form-text text-muted"><font color="red"> 	{{ form.last_name.errors }}</font></small>
+				</div> <!-- form-group end.// -->
+				<div class="col form-group">
+						<small class="form-text text-muted"><font color="red"> 	{{ form.last_name.errors }}</font></small>
 						<label for="{{ form.last_name.id_for_label }}">Segundo nome</label>
 						{{ form.last_name }}
-					</div> <!-- form-group end.// -->
+				</div> <!-- form-group end.// -->
 			</div> <!-- form-row end.// -->
 			<div class="form-row">
 					<div class="col form-group">
@@ -32,7 +32,7 @@
 						{{ form.docCPF }}
 					</div> <!-- form-group end.// -->
 					<div class="col form-group">
-					<small class="form-text text-muted"> <strong> <font color="red"> 	{{ form.phone_number.errors }} </font> </strong></small>
+						<small class="form-text text-muted"> <strong> <font color="red"> 	{{ form.phone_number.errors }} </font> </strong></small>
 						<label for="{{ form.phone_number.id_for_label }}">Telefone</label>
 						{{ form.phone_number }}
 					</div> <!-- form-group end.// -->

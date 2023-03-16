@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="section-content padding-y bg">
+	<div class="container">
+
+
+
+				<!-- ============================ COMPONENT 2 ================================= -->
+				<div class="row">
+						<main class="col-md-8">
+										<article class="card mb-4">
+											<div class="card-body">
+													<h4 class="card-title mb-4">Você esta comprando:</h4>
+													<div class="row">
+															{% for item in cart_itens %}
+																<div class="col-md-6">
+																	<figure class="itemside  mb-4">
+																		<div class="aside">
+																			 <a href="{{ item.product.get_url }}">
+																				<img src="{{ item.product.images.url }}" alt="{{ item.product.product_name }}"  title="{{ item.product.product_name }}" class="border img-sm">
+																			</a>
+																		</div>
+																		<figcaption class="info">
+																			<a href="{{ item.product.get_url }}"    title="{{ item.product.product_name }}"  class="title text-dark">{{ item.product.product_name}}</a>
+																			<!-- mostrando as váriações do produto -->
+																			<p class="text-muted small">
+																				{% if item.variations.all %}
+																					{% for i in item.variations.all %}
+																						{{ i.variation_category | capfirst }} : {{ i.variation_value | capfirst }}
+																						</br>
+																					{% endfor %}
+																				{% endif %}
+																			</p>
+																			<p class="text-muted small">
+																				<label>Quantidade: </label>  {{ item.quantity }}
+																			</p>
+																			<div class="price-wrap">
+																				<var class="price">R$ {{ item.sub_total }}</var>
+																				{% if item.quantity > 1 %}
+																					<small class="text-muted"> R$ {{ item.product.price }} cada.</small>
+																				{% endif %}
+																			</div> <!-- price-wrap .// -->
+																		</figcaption>
+																	</figure>
+																</div> <!-- col.// -->
+															{% endfor %}
+													</div> <!-- row.// -->
+											</div> <!-- card-body.// -->
+										</article> <!-- card.// -->
+
+
+					 <!--
+
+						################
+						################
+						mostrar o endereço cadastrado
+						################
+						################
+						################
+
+
+					 -->
+
+						<!-- col.// -->
+
+						</main>
+															<aside class="col-lg-3">
+
+																<div class="card">
+																	<div class="card-body" id="TotalProdutosCheckout">
+																		<dl class="dlist-align">
+																		  <dt>Valor dos Produtos:</dt>
+																			<!-- VALOR TOTAL DO CARRINHO SEM O FRETE -->
+																		  <dd class="text-right">R$ {{ total }}</dd>
+																		</dl>
+																		<dl class="dlist-align">
+																		  <dt>frete:</dt>
+																		  <dd class="text-right"> R$ {{ freight_product }}</dd>
+																		</dl>
+																		<dl class="dlist-align">
+																		  <dt>Total:</dt>
+																			<!-- VALOR FINAL DO CARRINHO ADICIONADO O VALOR DO FRETE -->
+																		  <dd class="text-right text-dark b"><strong>R$ {{ grand_total }}</strong></dd>
+																		</dl>
+																		<hr>
+																		<p class="text-center mb-3">
+																			<img src="{% static './images/misc/payments.png' %}" height="26">
+																		</p>
+																		<button type="submit" name="submit" class="btn btn-primary btn-block"> Finalizar Compra </button>
+																		<a href="{% url 'store' %}" class="btn btn-light btn-block">CONTINUAR COMPRANDO</a>
+
+																	</div> <!-- card-body.// -->
+																</div> <!-- card.// -->
+															</aside> <!-- col.// -->
+
+				</div>
+				<!-- ============================ COMPONENT 2 END//  ================================= -->
+
+	</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+{% endblock %}

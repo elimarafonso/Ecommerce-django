@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+
+<div class="row">
+	<aside class="col-md-3">
+		<ul class="list-group">
+			<a class="list-group-item {% if request.get_full_path ==  '/accounts/dashboard'  %} active {% else %} disable {% endif %}" href="{% url 'dashboard' %}">Visão Geral da conta </a>
+			<a class="list-group-item" href="#"> Minhas Compras </a>
+			<a class="list-group-item" href="#"> Favoritos <strong style="color:#DC143C;">	&#x2764;</strong> </a>
+			<a class="list-group-item" href="#"> Devoluções </a>
+			<a class="list-group-item  {% if request.get_full_path ==  '/accounts/listAddress/' or  '/accounts/updateAddress/' in request.get_full_path   %} active {% else %} disable {% endif %}" href="{% url 'listAddress' %}"> Endereço de Entrega </a>
+			<a class="list-group-item" href="#"> Pedidos Recebidos </a>
+		</ul>
+		<br>
+	<a class="btn btn-light btn-block" href="{% url 'logout' %}"><i class="fa fa-power-off"></i> <span class="text"> Sair </span> </a>
+
+
+	</aside> <!-- col.// -->
+
+		{% block dashboard %}
+
+
+		{% endblock %}
+
+
+
+</div>
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+<script src="{% static 'js/busca_CEP.js' %}"></script>
+{% endblock %}

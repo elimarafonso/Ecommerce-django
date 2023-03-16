@@ -1,29 +1,13 @@
-{% extends 'base.html' %}
+{% extends 'accounts/dashboard/baseDashboard.html' %}
 {% load static %}
-{% block content %}
+{% block dashboard %}
 
-<!-- ========================= SECTION CONTENT ========================= -->
-<section class="section-content padding-y">
-<div class="container">
-			<!-- MENSAGENS DA PAGINA START -->
+<!-- ========================= MAIN CONTENT ========================= -->
+<main class="col-md-9">
+
+	            <!-- MENSAGENS DA PAGINA START -->
 		  	{% include 'includes/alert.html'%}
 			<!-- MENSAGENS DA PAGINA ENDS -->
-<div class="row">
-	<aside class="col-md-3">
-		<ul class="list-group">
-			<a class="list-group-item active" href="#"> Account overview  </a>
-			<a class="list-group-item" href="#"> Minhas Compras </a>
-			<a class="list-group-item" href="#"> Favoritos <strong style="color:#DC143C;">	&#x2764;</strong> </a>
-			<a class="list-group-item" href="#"> Devoluções </a>
-			<a class="list-group-item" href="#"> Configurações </a>
-			<a class="list-group-item" href="#"> Pedidos Recebidos </a>
-		</ul>
-		<br>
-	<a class="btn btn-light btn-block" href="{% url 'logout' %}"><i class="fa fa-power-off"></i> <span class="text"> Sair </span> </a>
-
-
-	</aside> <!-- col.// -->
-	<main class="col-md-9">
 
 		<article class="card mb-3">
 			<div class="card-body">
@@ -40,10 +24,10 @@
 				</figure>
 				<hr>
 				<p>
-					<i class="fa fa-map-marker text-muted"></i> &nbsp; My address:
+					<i class="fa fa-map-marker text-muted"></i> &nbsp; Meu endereço:
 					 <br>
-					Tashkent city, Street name, Building 123, House 321 &nbsp
-					<a href="#" class="btn-link"> Edit</a>
+						Avenida Suiça - 390, Jardim Aeroporto, Capelinha - MG
+					<a href="{% url 'createAddress' %}" class="btn-link"> Editar</a>
 				</p>
 
 
@@ -121,10 +105,6 @@
 		</article> <!-- card.// -->
 
 	</main> <!-- col.// -->
-</div>
-
-</div> <!-- container .//  -->
-</section>
-<!-- ========================= SECTION CONTENT END// ========================= -->
+<!-- ========================= MAIN CONTENT END// ========================= -->
 
 {% endblock %}

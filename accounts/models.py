@@ -65,3 +65,24 @@ class Account(AbstractUser):
         return self.email
 
     objects = MyAccountManager()
+
+
+class DeliveryAddress(models.Model):
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    fullName = models.CharField(max_length=150, blank=False)
+    phoneNumber = models.CharField(max_length=15, blank=False)
+    docCPF = models.CharField(max_length=11, blank=False)
+    cep = models.CharField(max_length=250, blank=False)
+    state = models.CharField(max_length=2, blank=False)
+    city = models.CharField(max_length=100, blank=False)
+    district = models.CharField(max_length=100, blank=False)
+    street = models.CharField(max_length=100, blank=False)
+    complement = models.CharField(max_length=100, blank=False)
+    number = models.IntegerField()
+    observation = models.CharField(max_length=500,  blank=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+
+
+
+

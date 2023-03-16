@@ -1,7 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
+from django.views.generic import FormView
 from django.views.generic.base import TemplateView
 from store.models import Product, Variation
 from .models import Cart, CartItem
+from accounts.forms import DeliveryAddressForm
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -141,3 +144,34 @@ def remove_cart_item(request, product_id, cart_item_id=None):
     except:
         pass
     return redirect('cart')
+
+
+
+class CheckoutView(LoginRequiredMixin, FormView):
+    template_name = 'store/checkout.html'
+    form_class = DeliveryAddressForm
+    success_url = '/thanks/'
+    
+    def get_context_data(self, **kwargs):
+        context = super(CheckoutView, self).get_context_data(**kwargs)
+        total = 0
+        try:
+            cart = Cart.objects.get(cart_id=_cart_id(self.request))
+            cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+            for cart_item in cart_items:
+                total += (cart_item.product.price * cart_item.quantity)
+
+            freight_product = (10 * total) / 100  # calculando 10% do produto como frete_product
+            grand_total = total + freight_product  # valor final do carrinho é total + frete
+            context['total'] = total
+            context['cart_itens'] = cart_items
+            context['freight_product'] = freight_product
+            context['grand_total'] = grand_total
+
+        except ObjectDoesNotExist:
+            pass
+        return context
+
+
+    def form_valid(self, form):
+        return super(CheckoutView, self).form_valid(form)

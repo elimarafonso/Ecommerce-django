@@ -1,15 +1,17 @@
 from smtplib import SMTPException
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic.base import RedirectView, TemplateView
-from django.views.generic.edit import FormView, CreateView
+from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from .forms import RegistrationForm, Account, LoginForm, ForgotPasswordForm, ResetPasswordForm
 from django.contrib import messages
 from django.contrib import auth
+from accounts.forms import DeliveryAddressForm
+from .models import Account, DeliveryAddress
 
 # VERIFICAÇÃO DE EMAIL
 from django.contrib.sites.shortcuts import get_current_site
@@ -36,6 +38,8 @@ def validate_and_sendEmail(self, subject, user, email, url):
 
     except SMTPException as e:
         messages.error(self.request, f'Erro <{e}>')
+
+
 def resetPassword_validate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -51,7 +55,6 @@ def resetPassword_validate(request, uidb64, token):
     else:
         messages.error(request, f'Link inválido!')
         return redirect('login')
-
 
 
 class ForgotPasswordView(FormView):
@@ -77,7 +80,6 @@ class ResetPasswordFormView(FormView):
     template_name = 'accounts/resetPasswordForm.html'
     form_class = ResetPasswordForm
     success_url = reverse_lazy('login')
-
 
     def render_to_response(self, context, **response_kwargs):
         context['email'] = self.request.session['email']
@@ -111,7 +113,6 @@ class ResetPasswordFormView(FormView):
         return super().form_valid(form)
 
 
-
 class RegisterFormView(FormView):
     template_name = 'accounts/register.html'
     form_class = RegistrationForm
@@ -136,7 +137,7 @@ class RegisterFormView(FormView):
         validate_and_sendEmail(self, subject=subject, user=user, email=email, url=url)
         #
 
-        self.success_url = reverse_lazy('login')+f'?command=verification&email={email}'
+        self.success_url = reverse_lazy('login') + f'?command=verification&email={email}'
         return super().form_valid(form)
 
 
@@ -158,13 +159,10 @@ class LoginView(FormView):
         return super().form_valid(form)
 
 
-
-
-
-
 class LogoutView(LoginRequiredMixin, RedirectView, FormView):
     pattern_name = 'login'
     form_class = LoginForm
+
     def get_redirect_url(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             auth.logout(self.request)
@@ -173,12 +171,7 @@ class LogoutView(LoginRequiredMixin, RedirectView, FormView):
         return super(LogoutView, self).get_redirect_url(*args, **kwargs)
 
 
-
-
-
-
 def Activate(request, uidb64, token):
-
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = Account.objects.get(id=uid)
@@ -196,8 +189,80 @@ def Activate(request, uidb64, token):
         return redirect('register')
 
 
-
 class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = 'accounts/dashboard.html'
+    template_name = 'accounts/dashboard/overview.html'
 
 
+class UpdateAddressView(LoginRequiredMixin, UpdateView):
+    template_name = 'accounts/dashboard/updateAddress.html'
+    form_class = DeliveryAddressForm
+    model = DeliveryAddress
+    success_url = reverse_lazy('listAddress')
+
+    def form_valid(self, form):
+        messages.success(self.request, "Endereço Alterado !")
+        return super(UpdateAddressView, self).form_valid(form)
+
+
+class CreateAddressView(LoginRequiredMixin, FormView):
+    template_name = 'accounts/dashboard/registerAddress.html'
+    form_class = DeliveryAddressForm
+    success_url = reverse_lazy('listAddress')
+
+    def form_valid(self, form):
+
+        email = form.cleaned_data['user']
+        fullName = form.cleaned_data['fullName']
+        phoneNumber = form.cleaned_data['phoneNumber']
+        docCPF = form.cleaned_data['docCPF']
+        cep = form.cleaned_data['cep']
+        state = form.cleaned_data['state']
+        city = form.cleaned_data['city']
+        district = form.cleaned_data['district']
+        street = form.cleaned_data['street']
+        number = form.cleaned_data['number']
+        complement = form.cleaned_data['complement']
+        observation = form.cleaned_data['observation']
+
+        try:
+            user = Account.objects.get(email=email)
+
+            newAddress = DeliveryAddress(user=user,
+                                         fullName=fullName,
+                                         phoneNumber=phoneNumber,
+                                         docCPF=docCPF,
+                                         cep=cep,
+                                         state=state,
+                                         city=city,
+                                         district=district,
+                                         street=street,
+                                         number=number,
+                                         complement=complement,
+                                         observation=observation
+                                         )
+            newAddress.save()
+            messages.success(self.request, "Endereço Salvo")
+
+        except ObjectDoesNotExist:
+            messages.error(self.request, "O sistema encontrou dois endereços para esse usuario")
+
+
+        return super(CreateAddressView, self).form_valid(form)
+
+class ListAddressView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/dashboard/listAddress.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListAddressView, self).get_context_data(**kwargs)
+        email = self.request.user
+        user_account = Account.objects.get(email=email)
+
+        try:
+            context['address'] = DeliveryAddress.objects.get(user=user_account)
+        except ObjectDoesNotExist:
+            context['address'] = False
+        return context
+
+
+class DeleteAddressView(DeleteView):
+    pass

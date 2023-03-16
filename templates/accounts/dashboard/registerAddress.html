@@ -1,0 +1,130 @@
+{% extends 'accounts/dashboard/baseDashboard.html' %}
+{% load static %}
+{% block dashboard %}
+<article class="card mb-4 col-md-8" xmlns="http://www.w3.org/1999/html">
+    <div class="card-body">
+
+            <!-- MENSAGENS DA PAGINA START -->
+		  	{% include 'includes/alert.html'%}
+			<!-- MENSAGENS DA PAGINA ENDS -->
+
+
+        <form action="{% url 'createAddress' %}" method="POST" class="form-group">
+                            {% csrf_token %}
+                                <!-- formulário de registro de clientes start -->
+             <fieldset class="border p-2">
+                    <legend  class="w-auto">Quem vai receber a encomenda?</legend>
+                    <div class="form-row ">
+                        <div class="col form-group">
+                            <label for="id_fullName">Nome completo*</label>
+                            <input type="text" name="fullName" placeholder="ex: fulado da silva"   class="form-control" required id="id_fullName">
+                        </div> <!-- form-group end.// -->
+                        <div class=" col form-group col-md-3">
+                            <label for="id_phoneNumber">Telefone*</label>
+                            <input type="text" name="phoneNumber" maxlength="15" placeholder="(DDD) 9 9999-9999"   class="form-control" required id="id_phoneNumber">
+                            <small class="form-text text-muted"> <strong> <font color="red"> {{ form.phoneNumber.errors }} </font> </strong></small>
+                        </div> <!-- form-group end.// -->
+                    </div> <!-- form-row end.// -->
+                    <div class="form-row">
+
+                        <div class="col form-group col-md-3">
+                            <label for="id_docCPF">CPF*</label>
+                            <input type="text" name="docCPF" maxlength="15" placeholder="000.000.000-00"  class="form-control" required id="id_docCPF">
+                            <small class="form-text text-muted"> <strong> <font color="red"> {{ form.docCPF.errors }} </font> </strong></small>
+                        </div> <!-- form-group end.// -->
+                    </div> <!-- form-row end.// -->
+            </fieldset>
+             <br>
+             <fieldset class="border p-2 mb-4">
+                <legend  class="w-auto">Endereço de Entrega</legend>
+                        <div class="form-row">
+                                <div class="col form-group">
+                                    <label for="id_cep">cep*</label>
+                                    <input type="text" style="width: 50%;" name="cep" maxlength="9" placeholder="Digite seu Cep" class="form-control" required id="id_cep">
+                                    <input type="hidden" name="user"  value="{{ request.user.id }}"  id="id_user">
+                                </div> <!-- form-group end.// -->
+                            </div> <!-- form-row end.// -->
+                        <div class="form-row">
+                                <div class="col form-group">
+                                       <label for="id_state">estado*</label>
+
+
+                                    <select class="form-control" id="id_state" name="state">
+                                            <option value="">Estado</option>
+                                            <option value="AC">Acre</option>
+                                            <option value="AL">Alagoas</option>
+                                            <option value="AP">Amapá</option>
+                                            <option value="AM">Amazonas</option>
+                                            <option value="BA">Bahia</option>
+                                            <option value="CE">Ceará</option>
+                                            <option value="DF">Distrito Federal</option>
+                                            <option value="ES">Espírito Santo</option>
+                                            <option value="GO">Goiás</option>
+                                            <option value="MA">Maranhão</option>
+                                            <option value="MT">Mato Grosso</option>
+                                            <option value="MS">Mato Grosso do Sul</option>
+                                            <option value="MG">Minas Gerais</option>
+                                            <option value="PA">Pará</option>
+                                            <option value="PB">Paraíba</option>
+                                            <option value="PR">Paraná</option>
+                                            <option value="PE">Pernambuco</option>
+                                            <option value="PI">Piauí</option>
+                                            <option value="RJ">Rio de Janeiro</option>
+                                            <option value="RN">Rio Grande do Norte</option>
+                                            <option value="RS">Rio Grande do Sul</option>
+                                            <option value="RO">Rondônia</option>
+                                            <option value="RR">Roraima</option>
+                                            <option value="SC">Santa Catarina</option>
+                                            <option value="SP">São Paulo</option>
+                                            <option value="SE">Sergipe</option>
+                                            <option value="TO">Tocantins</option>
+                                            <option value="EX">Estrangeiro</option>
+                                    </select>
+
+                                </div> <!-- form-group end.// -->
+                                <div class="col form-group">
+                                        <label for="id_city">cidade*</label>
+                                        <input type="text" name="city" maxlength="15" placeholder="Ex: Capelinha"class="form-control" required id="id_city">
+                                </div> <!-- form-group end.// -->
+
+                        </div> <!-- form-row end.// -->
+                        <div class="form-group">
+                                <label for="id_district">Bairro*</label>
+                                <input type="text" name="district" maxlength="100"  class="form-control" placeholder="ex: Centro"  required id="id_district">
+
+                            </div> <!-- form-group end.// -->
+                        <div class="form-group">
+                                <label for="id_street">rua/avenida*</label>
+                                <input type="text" name="street" maxlength="100"  class="form-control" placeholder="ex: Rua das flores" required id="id_street">
+
+                            </div> <!-- form-group end.// -->
+                        <div class="form-row">
+                                <div class="col form-group">
+                                        <label for="id_number">número*</label>
+                                        <input type="text" name="number" placeholder="ex: 999"    class="form-control" required id="id_number">
+                                    </div> <!-- form-group end.// -->
+                                <div class="col form-group">
+                                        <label for="id_complement">complemento*</label>
+                                        <input type="text" name="complement" maxlength="100"  placeholder="Ex: próximo a padaria" class="form-control" required id="id_complement">
+                                    </div> <!-- form-group end.// -->
+                            </div> <!-- form-row end.// -->
+
+                        <div class="form-row">
+                               <label for="observation"> Observações sobre entrega?</label>
+                               <input type="text" class="form-control" name="observation"  id="id_observation" ></input>
+                           </div>
+
+                </fieldset>
+                                <div class="form-row">
+                                    <small class="form-text text-muted"> <strong> <font color="red"> {{ form.non_field_errors }} </font> </strong></small>
+                                    <small class="form-text text-muted"> <strong> <font color="red"> {{ form.user.errors }} </font> </strong></small>
+
+                                    <button type="submit" name="submit" class="btn btn-primary btn-block"> Salvar Endereço </button>
+                                </div>
+     </form>
+
+    </div> <!-- card-body.// -->
+</article>
+
+{% endblock %}
+<!-- formulário de combrança ENDS -->

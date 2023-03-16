@@ -1,0 +1,61 @@
+{% extends 'accounts/dashboard/baseDashboard.html' %}
+{% load static %}
+{% block dashboard %}
+
+  {% if address %}
+
+      <article class="card mb-4  col-md-8" xmlns="http://www.w3.org/1999/html">
+			<!-- MENSAGENS DA PAGINA START -->
+		  	{% include 'includes/alert.html'%}
+			<!-- MENSAGENS DA PAGINA ENDS -->
+      <div class="card-deck mt-3 mb-3">
+        <div class="card">
+          <div class="card-body">
+
+              <fieldset class="border p-2">
+                    <legend  class="w-auto">Quem vai receber a encomenda?</legend>
+                     <p class="card-text"><span><strong>Nome:</strong> </span> {{ address.fullName | capfirst  }} <span> </span></p>
+                     <p class="card-text"><span><strong>Telefone:</strong> </span> <span>{{ address.phoneNumber }}</span></p>
+                     <p class="card-text"><span><strong>CPF:</strong> </span> <span> {{ address.docCPF }} </span></p>
+             </fieldset>
+              <br>
+             <fieldset class="border p-2 mb-4">
+                <legend  class="w-auto">Endereço de Entrega</legend>
+                 <p class="card-text"><span><strong>Cidade:</strong> </span> <span> {{ address.city | capfirst  }} </span> - <span> {{ address.state }}  </span></p>
+                 <p class="card-text"><span><strong>CEP:</strong> </span> <span>{{ address.cep }}</span></p>
+                 <p class="card-text"><span><strong>Bairro:</strong> </span> <span> {{ address.district | capfirst  }} </span></p>
+                 <p class="card-text"><span><strong>Rua:</strong> </span> <span> {{ address.street | capfirst   }} </span><span> {{ address.number }} </span></p>
+                 <p class="card-text"><span><strong>Complemento:</strong> </span> <span>{{ address.complement | upper   }}</span></p>
+                 <br>
+                 <p class="card-text"><span><strong>Observação para entrega:</strong> </span> <span> {{ address.observation | upper  }} </span></p>
+             </fieldset>
+
+            <a href="{% url 'updateAddress'  pk=address.pk  %}" class="btn btn-primary btn-lg btn-block">Alterar endereço</a>
+              <br>
+            <a href="{% url 'deleteAddress'  pk=address.pk  %}" class="btn btn-primary btn-lg btn-block">Excluir endereço</a>
+              <br>
+            {% if address.modified_date %}
+                <p class="card-text"><small class="text-muted">Ultima Atualização: {{ address.modified_date }}</small></p>
+            {% endif %}
+          </div>
+        </div>
+
+
+
+      </div>
+      </article >
+
+  {% else %}
+    <article class="card mb-4 col-md-8" xmlns="http://www.w3.org/1999/html">
+      <div class="card-deck mt-3 mb-3">
+        <div class="card">
+          <div class="card-body">
+                <h5 class="card-title text-center">Você ainda não cadastrou um endereço para entrega</h5>
+                 <a href="{% url 'createAddress' %}" class="btn btn-primary btn-lg btn-block">Cadastrar endereço</a>
+              </div>
+        </div>
+    </article >
+
+  {% endif %}
+
+{% endblock %}

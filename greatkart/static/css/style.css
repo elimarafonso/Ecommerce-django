@@ -73,9 +73,11 @@ h2::after {
 }
 
 .slider .card img.product {
-  width: 100%;
+  width: 90%;
 }
 
+
+/*rever esta logica pois esta influenciando nos demais H do site */
 .slider .card .title {
   font-weight: 300;
   font-size: 20px;
@@ -85,9 +87,49 @@ h2::after {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+/*rever esta logica
+ referente ao carrinho de compras
+ */
+.info a#CartProduct {
+    font-weight: 300;
+    font-size: 70%;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+/*rever esta logica
+ referente /loja
+ */
+.info-wrap a#StoreProduct  {
+    font-weight: 300;
+    font-size: 20px;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
 
-
-
+a.title.text-dark {
+    font-weight: 300;
+    font-size: 70%;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+}
+/*rever esta logica
+ referente /checkout
+ */
+div#TotalProdutosCheckout {
+    font-weight: 300;
+    font-size: 85%;
+    margin: 0.5rem 0;
+}
 
 
 .slider .card .rating {

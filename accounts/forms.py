@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django import forms
-from .models import Account
+from .models import Account, DeliveryAddress
 
 from validate_docbr import CPF
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
@@ -144,4 +144,43 @@ class ResetPasswordForm(forms.Form):
             raise forms.ValidationError(
                 'As senhas NÃO são iguais, por favor confirme novamente'
             )
+
+
+
+
+class DeliveryAddressForm(forms.ModelForm):
+    class Meta:
+        model = DeliveryAddress
+        fields = ['fullName', 'phoneNumber', 'docCPF', 'cep', 'state', 'city', 'district', 'street', 'complement', 'number', 'observation', 'user']
+
+
+
+    def clean_observation(self):
+        obs = self.cleaned_data['observation']
+        if obs:
+            return obs
+        else:
+            return '----------- '
+
+    def clean_user(self):
+        userId = self.cleaned_data['user']
+
+        if userId:
+            return userId
+        else:
+            raise ValidationError('Erro ao associar Endereço ao usuário, Contate o suporte!')
+
+    def clean_docCPF(self):
+        doc = self.cleaned_data['docCPF']
+        if self.valida_doc(doc):
+            return doc
+        else:
+            raise ValidationError('CPF inválido.')
+
+    def valida_doc(self, doc):
+        cpf = CPF()
+        # Não aceitando entradas de 000.000.000-00/ 111.111.111-11 / 222.222.222-22 até 999.999.999-99
+        cpf.repeated_digits = False
+        doc = str(doc)
+        return cpf.validate(doc)
 

@@ -32,9 +32,11 @@
 
 		<td>
 			<figure class="itemside align-items-center">
-				<div class="aside"><img src="{{ item.product.images.url }}" class="img-sm"></div>
+				<div class="aside">
+					<img  src="{{ item.product.images.url }}" alt="{{ item.product.product_name }}"  title="{{ item.product.product_name }}" class="img-sm">
+				</div>
 				<figcaption class="info">
-					<a href="{{ item.product.get_url }}" class="title text-dark">{{ item.product.product_name}}</a>
+					<a href="{{ item.product.get_url }}"  title="{{ item.product.product_name }}" id="CartProduct" class="title text-dark">{{ item.product.product_name}}</a>
 					<!-- mostrando as váriações do produto -->
 					<p class="text-muted small">
 						{% if item.variations.all %}
@@ -71,7 +73,7 @@
 		<td>
 			<div class="price-wrap">
 				<var class="price">R$ {{ item.sub_total }}</var>
-				<small class="text-muted"> R$ {{ item.product.price }} </small>
+				<small class="text-muted"> R$ {{ item.product.price }} cada.</small>
 			</div> <!-- price-wrap .// -->
 		</td>
 		<td class="text-right">
@@ -109,7 +111,7 @@
 			<p class="text-center mb-3">
 				<img src="{% static './images/misc/payments.png' %}" height="26">
 			</p>
-			<a href="./place-order.html" class="btn btn-primary btn-block"> IR PARA O PAGAMENTO </a>
+			<a href="{% url 'checkout' %}" class="btn btn-primary btn-block"> IR PARA O PAGAMENTO </a>
 			<a href="{% url 'store' %}" class="btn btn-light btn-block">CONTINUAR COMPRANDO</a>
 		</div> <!-- card-body.// -->
 		</div> <!-- card.// -->
