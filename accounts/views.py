@@ -12,6 +12,8 @@ from django.contrib import messages
 from django.contrib import auth
 from accounts.forms import DeliveryAddressForm
 from .models import Account, DeliveryAddress
+from carts.models import Cart, CartItem
+from carts.views import _cart_id
 
 # VERIFICAÇÃO DE EMAIL
 from django.contrib.sites.shortcuts import get_current_site
@@ -152,6 +154,51 @@ class LoginView(FormView):
         user = auth.authenticate(self, username=email, password=password)
 
         if user is not None:
+            try:
+                cart = Cart.objects.get(cart_id=_cart_id(self.request))
+
+                is_cart_items_exists = CartItem.objects.filter(cart=cart).exists()
+                if is_cart_items_exists:
+                    # se possui itens no carrinho redirecionará para CHECKOUT apos login
+                    self.success_url = reverse_lazy('checkout')
+                    #
+                    cart_item = CartItem.objects.filter(cart=cart)
+
+                    # pegando a variação de cada produto do carrinho do carrinho
+                    product_variation = []
+                    for item in cart_item:
+                        variation = item.variations.all()
+                        product_variation.append(list(variation))
+
+                    # pegando os itens do carrinho do usuario logado
+                    cart_item = CartItem.objects.filter(user=user)
+                    ex_var_list = []
+                    id = []
+                    for item in cart_item:
+                        existing_variation = item.variations.all()
+                        ex_var_list.append(list(existing_variation))
+                        id.append(item.id)
+
+                    # comparando o carrinho antes de logar com o carrinho que está no perfil logado
+                    # para fazer uma lista só. Se ja estiver um produto no carrinho só aumenta sua quantidade
+                    # Se não existir adiciona um novo item
+                    for pr in product_variation:
+                        if pr in ex_var_list:
+                            index = ex_var_list.index(pr)
+                            item_id = id[index]
+                            item = CartItem.objects.get(id=item_id)
+                            item.quantity += 1
+                            item.user = user
+                            item.save()
+                        else:
+                            cart_item = CartItem.objects.filter(cart=cart)
+                            for item in cart_item:
+                                item.user = user
+                                item.save()
+
+            except:
+                pass
+
             auth.login(self.request, user)
             messages.success(self.request, f'Seja bem vindo, {user.first_name} ')
         else:

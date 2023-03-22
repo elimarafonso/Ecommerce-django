@@ -9,10 +9,10 @@
 
 				<!-- ============================ COMPONENT 2 ================================= -->
 				<div class="row">
-						<main class="col-md-8">
+						<main class="col-md-9">
 										<article class="card mb-4">
 											<div class="card-body">
-													<h4 class="card-title mb-4">Você esta comprando:</h4>
+													<h1 class="card-title mb-4 .text-center">Você esta comprando:</h1>
 													<div class="row">
 															{% for item in cart_itens %}
 																<div class="col-md-6">
@@ -71,7 +71,7 @@
 																<div class="card">
 																	<div class="card-body" id="TotalProdutosCheckout">
 																		<dl class="dlist-align">
-																		  <dt>Valor dos Produtos:</dt>
+																		  <dt>Valor:</dt>
 																			<!-- VALOR TOTAL DO CARRINHO SEM O FRETE -->
 																		  <dd class="text-right">R$ {{ total }}</dd>
 																		</dl>
