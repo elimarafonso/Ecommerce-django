@@ -23,8 +23,8 @@
                 <legend  class="w-auto">Endereço de Entrega</legend>
                  <p class="card-text"><span><strong>Cidade:</strong> </span> <span> {{ address.city | capfirst  }} </span> - <span> {{ address.state }}  </span></p>
                  <p class="card-text"><span><strong>CEP:</strong> </span> <span>{{ address.cep }}</span></p>
-                 <p class="card-text"><span><strong>Bairro:</strong> </span> <span> {{ address.district | capfirst  }} </span></p>
                  <p class="card-text"><span><strong>Rua:</strong> </span> <span> {{ address.street | capfirst   }} </span><span> {{ address.number }} </span></p>
+                 <p class="card-text"><span><strong>Bairro:</strong> </span> <span> {{ address.district | capfirst  }} </span></p>
                  <p class="card-text"><span><strong>Complemento:</strong> </span> <span>{{ address.complement | upper   }}</span></p>
                  <br>
                  <p class="card-text"><span><strong>Observação para entrega:</strong> </span> <span> {{ address.observation | upper  }} </span></p>

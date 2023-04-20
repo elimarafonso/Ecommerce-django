@@ -2,6 +2,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import FormView
 from django.views.generic.base import TemplateView
+
+from accounts.models import Account, DeliveryAddress
 from store.models import Product, Variation
 from .models import Cart, CartItem
 from accounts.forms import DeliveryAddressForm
@@ -231,6 +233,9 @@ class CheckoutView(LoginRequiredMixin, FormView):
         context = super(CheckoutView, self).get_context_data(**kwargs)
         total = 0
         user = self.request.user
+
+
+
         try:
             if self.request.user.is_authenticated:
                 cart_items = CartItem.objects.filter(user=user, is_active=True)
@@ -249,6 +254,19 @@ class CheckoutView(LoginRequiredMixin, FormView):
 
         except ObjectDoesNotExist:
             pass
+
+        # imprimindo endereço de entrega
+        email = self.request.user
+        user_account = Account.objects.get(email=email)
+
+        try:
+            context['address'] = DeliveryAddress.objects.get(user=user_account)
+        except ObjectDoesNotExist:
+            context['address'] = False
+
+        #
+
+
         return context
 
 

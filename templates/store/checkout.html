@@ -12,7 +12,7 @@
 						<main class="col-md-9">
 										<article class="card mb-4">
 											<div class="card-body">
-													<h1 class="card-title mb-4 .text-center">Você esta comprando:</h1>
+													<h3 class="card-title mb-4 .text-center">Você esta comprando:</h3>
 													<div class="row">
 															{% for item in cart_itens %}
 																<div class="col-md-6">
@@ -50,54 +50,95 @@
 											</div> <!-- card-body.// -->
 										</article> <!-- card.// -->
 
-
-					 <!--
-
-						################
+											  <!--
 						################
 						mostrar o endereço cadastrado
 						################
-						################
-						################
+					-->
+							<div class="container containerAddress">
+								{% if address  %}
+									<dl class="row address" >
+										<dt class="col-sm-6 address title">  {{ address.fullName | capfirst  }} </dt>
+										<dd class="col-sm-6 text-truncate address">{{ address.street | capfirst   }}, {{ address.number }} ,</dd>
+										<dd class="col-sm-6 address"> {{ address.district | capfirst  }} </dd>
 
+										<dd class="col-sm-6 address">{{ address.city | capfirst  }} - {{ address.state | upper }} </dd>
+										<dd class="col-sm-6 address"> {{ address.phoneNumber }} </dd>
+										<dd class="col-sm-6 address">CEP:  {{ address.cep }} </dd>
+										<dd class="col-sm-6 address"> </dd>
 
-					 -->
-
-						<!-- col.// -->
+										<dd class="col-sm-6 address">
+											<ul class="list-group">
+												<li class="list-group list-group-flush address"></li>
+												<a href="{% url 'updateAddress'  pk=address.pk  %}" class="badge badge-light ">
+													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+													<path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
+													<path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
+													</svg>
+													Alterar endereço de entrega
+												</a>
+											</ul>
+										</dd>
+									</dl>
+								{% else %}
+									<p class="text-danger">	Erro ao carregar Endereço </p>
+									<ul class="list-group">
+												<li class="list-group list-group-flush address"></li>
+												<a href="{% url 'updateAddress'  pk=address.pk  %}" class="badge badge-light ">
+													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+													<path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
+													<path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
+													</svg>
+													Adicionar endereço de entrega
+												</a>
+									</ul>
+								{% endif %}
+							</div>
 
 						</main>
-															<aside class="col-lg-3">
 
-																<div class="card">
-																	<div class="card-body" id="TotalProdutosCheckout">
-																		<dl class="dlist-align">
-																		  <dt>Valor:</dt>
-																			<!-- VALOR TOTAL DO CARRINHO SEM O FRETE -->
-																		  <dd class="text-right">R$ {{ total }}</dd>
-																		</dl>
-																		<dl class="dlist-align">
-																		  <dt>frete:</dt>
-																		  <dd class="text-right"> R$ {{ freight_product }}</dd>
-																		</dl>
-																		<dl class="dlist-align">
-																		  <dt>Total:</dt>
-																			<!-- VALOR FINAL DO CARRINHO ADICIONADO O VALOR DO FRETE -->
-																		  <dd class="text-right text-dark b"><strong>R$ {{ grand_total }}</strong></dd>
-																		</dl>
-																		<hr>
-																		<p class="text-center mb-3">
-																			<img src="{% static './images/misc/payments.png' %}" height="26">
-																		</p>
-																		<button type="submit" name="submit" class="btn btn-primary btn-block"> Finalizar Compra </button>
-																		<a href="{% url 'store' %}" class="btn btn-light btn-block">CONTINUAR COMPRANDO</a>
 
-																	</div> <!-- card-body.// -->
-																</div> <!-- card.// -->
-															</aside> <!-- col.// -->
+
+									<aside class="col-lg-3">
+
+										<div class="card">
+											<div class="card-body" id="TotalProdutosCheckout">
+												<dl class="dlist-align">
+												  <dt>Valor:</dt>
+													<!-- VALOR TOTAL DO CARRINHO SEM O FRETE -->
+												  <dd class="text-right">R$ {{ total }}</dd>
+												</dl>
+												<dl class="dlist-align">
+												  <dt>frete:</dt>
+												  <dd class="text-right"> R$ {{ freight_product }}</dd>
+												</dl>
+												<dl class="dlist-align">
+												  <dt>Total:</dt>
+													<!-- VALOR FINAL DO CARRINHO ADICIONADO O VALOR DO FRETE -->
+												  <dd class="text-right text-dark b"><strong>R$ {{ grand_total }}</strong></dd>
+												</dl>
+												<hr>
+												<p class="text-center mb-3">
+													<img src="{% static './images/misc/payments.png' %}" height="26">
+												</p>
+												<button type="submit" name="submit" class="btn btn-primary btn-block"> Finalizar Compra </button>
+												<a href="{% url 'store' %}" class="btn btn-light btn-block">CONTINUAR COMPRANDO</a>
+
+											</div> <!-- card-body.// -->
+										</div> <!-- card.// -->
+									</aside> <!-- col.// -->
+
+
 
 				</div>
 				<!-- ============================ COMPONENT 2 END//  ================================= -->
 
+					<section class="section-content padding-y bg">
+
+
+
+					</section>
+						<!-- col.// -->
 	</div> <!-- container .//  -->
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
