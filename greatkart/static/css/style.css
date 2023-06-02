@@ -25,7 +25,7 @@ h2 {
   text-align: center;
 }
 
-h2::after {
+.sublinha::after {
   content: "";
   position: absolute;
   width: 200px;

@@ -2,7 +2,7 @@ from django.db import models
 
 from accounts.models import Account, DeliveryAddress
 from store.models import Product, Variation
-
+from datetime import datetime
 
 class Payment(models.Model):
     user = models.ForeignKey(Account, name='Usuário', on_delete=models.CASCADE)
@@ -28,15 +28,16 @@ class Order(models.Model):
         ('Cancelled', 'Cancelado'),
     )
 
-    user = models.ForeignKey(Account, name='Usuário', on_delete=models.SET_NULL, null=True)
-    payment = models.ForeignKey(Payment, name='Pagamento',  on_delete=models.SET_NULL, blank=True, null=True)
-    delivery_address = models.ForeignKey(DeliveryAddress,  name='Endereço de Entrega', on_delete=models.CASCADE, null=False, blank=False)
+    user = models.ForeignKey(Account,  on_delete=models.SET_NULL, null=True)
+    payment = models.ForeignKey(Payment,  on_delete=models.SET_NULL, blank=True, null=True)
+    delivery_address = models.ForeignKey(DeliveryAddress,  on_delete=models.CASCADE, null=False, blank=False)
     order_number = models.CharField('Número do Pedido', max_length=20)
-    order_note = models.CharField('Nota do Pedido', max_length=100, blank=True)
-    order_total = models.FloatField('Total do pedido')
-    tax = models.FloatField('Taxa')
-    status = models.CharField('Status', max_length=10, choices=STATUS, default='New')
+    order_total = models.DecimalField('Total do pedido',  max_digits=8, decimal_places=2)
+    tax = models.DecimalField('Taxa',  max_digits=8, decimal_places=2)
+    status = models.CharField('Status', max_length=10, choices=STATUS, default='Novo')
+    # dados do ip de compra
     ip = models.CharField('IP', blank=True, max_length=20)
+    #
     is_ordered = models.BooleanField('Ordenado', default=True)
     created_at = models.DateTimeField('Data de criação', auto_now_add=True)
     updated_at = models.DateTimeField('Atualizado em', auto_now=True)
@@ -46,7 +47,13 @@ class Order(models.Model):
         verbose_name_plural = 'Pedidos de compras'
 
     def __str__(self):
-        return self.user.first_name
+        return self.order_number
+
+    def createNumber(self, id):
+        date = datetime.today()
+        d = datetime.date(date)
+        number = d.strftime('%d%m%Y') + str(id) # Dia + Mes + Ano + IDdopedido ->
+        return number
 
 
 class OrderProduct(models.Model):
@@ -61,7 +68,7 @@ class OrderProduct(models.Model):
     # size = models.CharField(max_length=50)
     #
     #
-    quantity = models.IntegerField
+    quantity = models.IntegerField()
     product_price = models.FloatField('Valor do produto')
     ordered = models.BooleanField('Ordenado', default=False)
     created_at = models.DateTimeField('Adicionado', auto_now_add=True)
@@ -73,3 +80,7 @@ class OrderProduct(models.Model):
 
     def __str__(self):
         return self.product.product_name
+
+
+
+

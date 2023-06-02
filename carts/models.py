@@ -1,3 +1,5 @@
+import decimal
+
 from django.db import models
 from store.models import Product, Variation
 from accounts.models import Account
@@ -37,5 +39,25 @@ class CartItem(models.Model):
         return self.product
 
 
+    @staticmethod
+    def calcTotalCart(cart_items):
+        # FUNÇÃO PARA CALCULAR O TOTAL DO CARRINHO
+        total = 0
+        grand_total = 0
+        tax = decimal.Decimal(0.1) # FRETE
+        quantity = 0
+        for item in cart_items:
+            total += (item.product.price * item.quantity)
+            quantity += item.quantity
+        grand_total = (total * tax) + total
+        freight_product = (10 * total) / 100  # calculando 10% do produto como frete_product
+        grand_total = total + freight_product  # valor final do carrinho é total + frete
+        info = {
+            'freight_product': freight_product,
+            'total': total,
+            'quantity': quantity,
+            'grand_total': grand_total
+        }
+        return info
 
 

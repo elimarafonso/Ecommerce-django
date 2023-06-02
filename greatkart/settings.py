@@ -36,11 +36,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'orders',
     'accounts',
     'category',
     'store',
     'carts',
-    'orders',
 ]
 
 MIDDLEWARE = [
@@ -149,4 +149,7 @@ EMAIL_HOST_USER = 'elimar.afonso1@gmail.com'
 EMAIL_HOST_PASSWORD = 'xreozsgiflqeswhq'
 EMAIL_USE_TLS = True
 
-
+# PayPal Credentials
+PAYPAL_CLIENT_ID = 'AQAqlJLS1CZ6sYoumAsz2T3aeafEM1RCGK4eYkWwOoUXkYBQqN5D9k4aYRTSbVxeIXcJIj1Dh-MIbdhY'
+PAYPAL_SECRET_ID = 'EFlhz42yibw087mtw07KZmz1SJ4d1HVGfEdPAsudTQTmKrkA-E20ckxNE5KXTvMXPSRRHHl3hE6EBeTE'
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'

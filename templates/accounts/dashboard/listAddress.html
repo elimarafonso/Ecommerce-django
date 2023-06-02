@@ -30,9 +30,9 @@
                  <p class="card-text"><span><strong>Observação para entrega:</strong> </span> <span> {{ address.observation | upper  }} </span></p>
              </fieldset>
 
-            <a href="{% url 'updateAddress'  pk=address.pk  %}" class="btn btn-primary btn-lg btn-block">Alterar endereço</a>
+            <a href="{% url 'updateAddress'  pk=address.pk  %}" class="btn btn-info btn-lg btn-block">Alterar endereço</a>
               <br>
-            <a href="{% url 'deleteAddress'  pk=address.pk  %}" class="btn btn-primary btn-lg btn-block">Excluir endereço</a>
+            <a href="{% url 'deleteAddress'  pk=address.pk  %}" class="btn btn-danger btn-lg btn-block">Excluir endereço</a>
               <br>
             {% if address.modified_date %}
                 <p class="card-text"><small class="text-muted">Ultima Atualização: {{ address.modified_date }}</small></p>

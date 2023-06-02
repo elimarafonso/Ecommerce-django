@@ -6,6 +6,12 @@
 	<div class="container">
 
 
+	{% if not cart_itens %}
+	<div class="text-center" >
+		<h2> Seu carrinho está vazio :( </h2>
+		<a href="{% url 'store' %}" class="btn btn-primary"> ir para loja</a>
+	</div>
+	{% else %}
 
 				<!-- ============================ COMPONENT 2 ================================= -->
 				<div class="row">
@@ -55,8 +61,11 @@
 						mostrar o endereço cadastrado
 						################
 					-->
-							<div class="container containerAddress">
+							<article class="card mb-4">
+
 								{% if address  %}
+								<div class="container mt-4">
+								<h3 class="card-title mb-4 .text-center">Endereço de entrega:</h3>
 									<dl class="row address" >
 										<dt class="col-sm-6 address title">  {{ address.fullName | capfirst  }} </dt>
 										<dd class="col-sm-6 text-truncate address">{{ address.street | capfirst   }}, {{ address.number }} ,</dd>
@@ -67,10 +76,10 @@
 										<dd class="col-sm-6 address">CEP:  {{ address.cep }} </dd>
 										<dd class="col-sm-6 address"> </dd>
 
-										<dd class="col-sm-6 address">
-											<ul class="list-group">
+
+											<ul class="list-group  mb-4 mt-4">
 												<li class="list-group list-group-flush address"></li>
-												<a href="{% url 'updateAddress'  pk=address.pk  %}" class="badge badge-light ">
+												<a href="{% url 'updateAddress'  pk=address.pk  %}" class="btn btn-info btn-lg btn-block ">
 													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
 													<path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
 													<path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
@@ -78,13 +87,15 @@
 													Alterar endereço de entrega
 												</a>
 											</ul>
-										</dd>
 									</dl>
+							</div>
 								{% else %}
-									<p class="text-danger">	Erro ao carregar Endereço </p>
-									<ul class="list-group">
+									<div class="container mt-4">
+										<h3 class="card-title mb-4 .text-center">Endereço de entrega:</h3>
+									<h2 class="text-danger">	Por favor Adicione um Endereço antes de continuar !!!!! </h2>
+									<ul class="list-group mb-3">
 												<li class="list-group list-group-flush address"></li>
-												<a href="{% url 'updateAddress'  pk=address.pk  %}" class="badge badge-light ">
+												<a href="{% url 'listAddress'  %}" class="btn btn-info btn-lg btn-block">
 													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
 													<path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
 													<path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
@@ -92,12 +103,13 @@
 													Adicionar endereço de entrega
 												</a>
 									</ul>
+									</div>
+
 								{% endif %}
-							</div>
+
+						</article >
 
 						</main>
-
-
 
 									<aside class="col-lg-3">
 
@@ -121,26 +133,15 @@
 												<p class="text-center mb-3">
 													<img src="{% static './images/misc/payments.png' %}" height="26">
 												</p>
-												<button type="submit" name="submit" class="btn btn-primary btn-block"> Finalizar Compra </button>
-												<a href="{% url 'store' %}" class="btn btn-light btn-block">CONTINUAR COMPRANDO</a>
+												<a href="{% if address  %}{% url 'placeOrder' %} {% else %} #{% endif %}" name="finalizaCompra"   class="btn btn-primary btn-block"> IR PARA O PAGAMENTO </a>
+												<a href="{% url 'store' %}" class="btn btn-light btn-block">Continuar Comprando</a>
 
 											</div> <!-- card-body.// -->
 										</div> <!-- card.// -->
 									</aside> <!-- col.// -->
-
-
-
 				</div>
-				<!-- ============================ COMPONENT 2 END//  ================================= -->
 
-					<section class="section-content padding-y bg">
-
-
-
-					</section>
-						<!-- col.// -->
-	</div> <!-- container .//  -->
+{% endif %}
+</div> <!-- container .//  -->
 </section>
-<!-- ========================= SECTION CONTENT END// ========================= -->
-
 {% endblock %}

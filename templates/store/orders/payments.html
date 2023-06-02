@@ -1,0 +1,212 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Include the PayPal JavaScript SDK -->
+
+<section class="section-content padding-y bg">
+<script src="https://www.paypal.com/sdk/js?client-id=AdBbkjeM24zhQUqeHEHD1i1kpvnfnzimryJ5pKgB54zVoUfC77unKaWYGT7lF7Qm_iYgKDE1mlcCKnv9"></script>
+	<div class="container">
+
+
+				<!-- ============================ COMPONENT 2 ================================= -->
+				<div class="row">
+						<main class="col-md-8">
+										<article class="card mb-4">
+											<div class="card-body">
+                                                <!-- accordion start .// -->
+                                                <div class="accordion" id="accordionExample">
+                                                      <div class="card">
+                                                        <div class="card-header" id="headingOne">
+                                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                                <h4 class="mb-0">
+                                                                    Endereço de Entrega:
+                                                                </h4>
+                                                            </button>
+                                                        </div>
+                                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                          <div class="card-body">
+                                                        {% if address  %}
+                                                            <dl class="row address" >
+                                                                <dt class="col-sm-6 address title">  {{ address.fullName | capfirst  }} </dt>
+                                                                <dd class="col-sm-6 text-truncate address">{{ address.street | capfirst   }}, {{ address.number }} ,</dd>
+                                                                <dd class="col-sm-6 address"> {{ address.district | capfirst  }} </dd>
+
+                                                                <dd class="col-sm-6 address">{{ address.city | capfirst  }} - {{ address.state | upper }} </dd>
+                                                                <dd class="col-sm-6 address"> {{ address.phoneNumber }} </dd>
+                                                                <dd class="col-sm-6 address">CEP:  {{ address.cep }} </dd>
+                                                                <dd class="col-sm-6 address"> </dd>
+
+                                                                <dd class="col-sm-6 address">
+                                                                    <ul class="list-group">
+                                                                        <li class="list-group list-group-flush address"></li>
+                                                                    </ul>
+                                                                </dd>
+                                                                <br>
+                                                                <a href="{% url 'updateAddress'  pk=address.pk  %}" class="btn btn-info btn-block">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+                                                                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
+                                                                    <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
+                                                                </svg>
+                                                                Alterar endereço de entrega
+                                                                </a>
+                                                            </dl>
+							                          {% endif %}
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                      <div class="card">
+                                                        <div class="card-header" id="headingTwo">
+                                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                              <h4 class="mb-0">
+                                                                Você esta comprando:
+                                                              </h4>
+                                                            </button>
+                                                        </div>
+                                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                                          <div class="card-body">
+                                                                    <div class="row">
+                                                                            {% for item in cart_itens %}
+                                                                                <div class="col-md-6">
+                                                                                    <figure class="itemside  mb-4">
+                                                                                        <div class="aside">
+                                                                                             <a href="{{ item.product.get_url }}">
+                                                                                                <img src="{{ item.product.images.url }}" alt="{{ item.product.product_name }}"  title="{{ item.product.product_name }}" class="border img-sm">
+                                                                                            </a>
+                                                                                        </div>
+                                                                                        <figcaption class="info">
+                                                                                            <a href="{{ item.product.get_url }}"    title="{{ item.product.product_name }}"  class="title text-dark">{{ item.product.product_name}}</a>
+                                                                                            <!-- mostrando as váriações do produto -->
+                                                                                            <p class="text-muted small">
+                                                                                                {% if item.variations.all %}
+                                                                                                    {% for i in item.variations.all %}
+                                                                                                        {{ i.variation_category | capfirst }} : {{ i.variation_value | capfirst }}
+                                                                                                        </br>
+                                                                                                    {% endfor %}
+                                                                                                {% endif %}
+                                                                                            </p>
+                                                                                            <p class="text-muted small">
+                                                                                                <label>Quantidade: </label>  {{ item.quantity }}
+                                                                                            </p>
+                                                                                            <div class="price-wrap">
+                                                                                                <var class="price">R$ {{ item.sub_total }}</var>
+                                                                                                {% if item.quantity > 1 %}
+                                                                                                    <small class="text-muted"> R$ {{ item.product.price }} cada.</small>
+                                                                                                {% endif %}
+                                                                                            </div> <!-- price-wrap .// -->
+                                                                                        </figcaption>
+                                                                                    </figure>
+                                                                                </div> <!-- col.// -->
+                                                                            {% endfor %}
+                                                                    </div> <!-- row.// -->
+
+                                                          </div>
+                                                        </div>
+                                                      </div>
+
+                                                </div>
+
+
+                                                <!-- accordion end .// -->
+
+
+
+
+											</div> <!-- card-body.// -->
+										</article> <!-- card.// -->
+
+
+
+
+						</main>
+
+									<aside class="col-lg-4">
+
+										<div class="card">
+											<div class="card-body" id="TotalProdutosCheckout">
+												<dl class="dlist-align">
+												  <dt>Valor:</dt>
+													<!-- VALOR TOTAL DO CARRINHO SEM O FRETE -->
+												  <dd class="text-right">R$ {{ total_order.total }}</dd>
+												</dl>
+												<dl class="dlist-align">
+												  <dt>frete:</dt>
+												  <dd class="text-right"> R$ {{ total_order.freight_product }}</dd>
+												</dl>
+												<dl class="dlist-align">
+												  <dt>Total:</dt>
+													<!-- VALOR FINAL DO CARRINHO ADICIONADO O VALOR DO FRETE -->
+												  <dd class="text-right text-dark b"><strong>R$ {{ total_order.grand_total }}</strong></dd>
+												</dl>
+												<hr>
+												<p class="text-center mb-3">
+													<img src="{% static './images/misc/payments.png' %}" height="26">
+												</p>
+                                                     <!-- Set up a container element for the PayPal button -->
+                                                     <div id="paypal-button-container">
+                                                         <!-- botao do PayPal -->
+                                                     </div>
+
+											</div> <!-- card-body.// -->
+										</div> <!-- card.// -->
+									</aside> <!-- col.// -->
+				</div>
+
+</div> <!-- container .//  -->
+
+
+
+    <!-- PayPal javascript pagina payments--> <!-- Replace "test" with your own sandbox Business account app client ID -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AQAqlJLS1CZ6sYoumAsz2T3aeafEM1RCGK4eYkWwOoUXkYBQqN5D9k4aYRTSbVxeIXcJIj1Dh-MIbdhY"></script>
+
+    <script>
+     paypal.Buttons({
+        // Order is created on the server and the order id is returned
+        createOrder() {
+          return fetch("/my-server/create-paypal-order", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            // use the "body" param to optionally pass additional order information
+            // like product skus and quantities
+            body: JSON.stringify({
+              cart: [
+                {
+                  sku: "YOUR_PRODUCT_STOCK_KEEPING_UNIT",
+                  quantity: "YOUR_PRODUCT_QUANTITY",
+                },
+              ],
+            }),
+          })
+          .then((response) => response.json())
+          .then((order) => order.id);
+        },
+        // Finalize the transaction on the server after payer approval
+        onApprove(data) {
+          return fetch("/my-server/capture-paypal-order", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              orderID: data.orderID
+            })
+          })
+          .then((response) => response.json())
+          .then((orderData) => {
+            // Successful capture! For dev/demo purposes:
+            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+            const transaction = orderData.purchase_units[0].payments.captures[0];
+            alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+            // When ready to go live, remove the alert and show a success message within this page. For example:
+            // const element = document.getElementById('paypal-button-container');
+            // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+            // Or go to another URL:  window.location.href = 'thank_you.html';
+          });
+        }
+      }).render('#paypal-button-container');
+    </script>
+</section>
+
+
+{% endblock %}

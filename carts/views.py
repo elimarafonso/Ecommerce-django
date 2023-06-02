@@ -10,7 +10,6 @@ from accounts.forms import DeliveryAddressForm
 from django.core.exceptions import ObjectDoesNotExist
 
 
-# Create your views here.
 
 
 class CartView(TemplateView):
@@ -196,7 +195,6 @@ def remove_cart(request, product_id, cart_item_id):
             cart = Cart.objects.get(cart_id=_cart_id(request))
             cart_item = CartItem.objects.get(cart=cart, product=product, id=cart_item_id)
 
-
         if cart_item.quantity > 1:
             cart_item.quantity -= 1
             cart_item.save()
@@ -223,17 +221,16 @@ def remove_cart_item(request, product_id, cart_item_id=None):
     return redirect('cart')
 
 
-
-class CheckoutView(LoginRequiredMixin, FormView):
+class CheckoutView(LoginRequiredMixin, TemplateView):
     template_name = 'store/checkout.html'
-    form_class = DeliveryAddressForm
-    success_url = '/thanks/'
-    
+
     def get_context_data(self, **kwargs):
         context = super(CheckoutView, self).get_context_data(**kwargs)
         total = 0
         user = self.request.user
-
+        current_user = self.request.user
+        # se não existir item no carrinho, redirecione de volta para a loja.
+        cart_items_Exists = CartItem.objects.filter(user=current_user).exists()
 
 
         try:
@@ -264,11 +261,4 @@ class CheckoutView(LoginRequiredMixin, FormView):
         except ObjectDoesNotExist:
             context['address'] = False
 
-        #
-
-
         return context
-
-
-    def form_valid(self, form):
-        return super(CheckoutView, self).form_valid(form)

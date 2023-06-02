@@ -312,4 +312,5 @@ class ListAddressView(LoginRequiredMixin, TemplateView):
 
 
 class DeleteAddressView(DeleteView):
-    pass
+    model = DeliveryAddress
+    success_url = reverse_lazy('listAddress')

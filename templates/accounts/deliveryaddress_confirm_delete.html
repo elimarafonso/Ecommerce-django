@@ -1,0 +1,25 @@
+{% extends 'accounts/dashboard/baseDashboard.html' %}
+{% load static %}
+{% block dashboard %}
+
+
+    <article class="card mb-4 col-md-9" xmlns="http://www.w3.org/1999/html">
+      <div class="card-deck mt-3 mb-3">
+        <div class="card">
+          <div class="card-body">
+                <form method="post" class="">
+                    {% csrf_token %}
+                    <h3 class="card-title text-center">Deseja excluir este endereço "<strong> {{ object }} </strong>" ? </h3>
+                    <br>
+                    <br>
+                    <input type="submit" class="btn btn-danger  btn-lg btn-block" value="Excluir">
+                    <br>
+                     <a href="{% url 'listAddress'%}" class="btn btn-primary btn-lg btn-block">Cancelar</a>
+                </form>
+              </div>
+        </div>
+    </article>
+
+
+
+{% endblock %}
