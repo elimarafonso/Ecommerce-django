@@ -5,41 +5,37 @@
 <!-- ========================= SECTION MAIN ========================= -->
 <section class="section-intro padding-y-sm">
 
-<div class="container">
+		<!--<div class="container">---->
 
-	<div class="intro-banner-wrap">
-	 <!--	<img src="{% static 'images/banners/1.jpg' %}" class="img-fluid rounded"> ---->
+	 	<div class="container intro-banner-wrap">
 
 		 <!--container //  ---->
-		 <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
-			  <div class="carousel-inner">
-					<div class="carousel-item active" data-interval="300">
-						  <img  src="{% static 'images/banners/banner1.jpg' %}" class="d-block w-100" alt="...">
-					</div>
-					<div class="carousel-item" data-interval="300">
-						 <img  src="{% static 'images/banners/banner2.jpg' %}" class="d-block w-100" alt="...">
-					</div>
-					<div class="carousel-item" data-interval="300">
-						 <img  src="{% static 'images/banners/banner3.jpg' %}" class="d-block w-100" alt="...">
-					</div>
-			  </div>
+			 <div id="carouselExampleInterval" class="carousel slide" data-ride="carousel">
+				  <div class="carousel-inner">
+						<div class="carousel-item active" data-interval="300">
+							  <img  src="{% static 'images/banners/banner1.png' %}" class="d-block w-100" alt="...">
+						</div>
+						<div class="carousel-item" data-interval="300">
+							 <img  src="{% static 'images/banners/banner2.png' %}" class="d-block w-100" alt="...">
+						</div>
 
-		  <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="sr-only">voltar</span>
-		  </a>
-		  <a class="carousel-control-next" href="#carouselExampleInterval" role="button" data-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="sr-only">próximo</span>
-		  </a>
-		</div>
+				  </div>
 
-		<!--container //  ---->
+				  <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="sr-only">voltar</span>
+				  </a>
+				  <a class="carousel-control-next" href="#carouselExampleInterval" role="button" data-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="sr-only">próximo</span>
+				  </a>
+			</div>
 
-	</div>
+		  </div>
 
-</div>
- <!--container //  ----> <!--container //  ---->
+<!--	</div>-container //  ---->
+
+
 </section>
 
 
@@ -55,9 +51,7 @@
 			<!--CARROUSEL START -->
 				{% include 'includes/home/listing_products.html' %}
 			<!--CARROUSEL END -->
-			<!--CARROUSEL START -->
-				{% include 'includes/home/listing_products.html' %}
-			<!--CARROUSEL END -->
+
 	</div>
 </section>
 <!-- ========================= SECTION  END// ========================= -->

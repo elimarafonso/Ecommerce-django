@@ -1359,8 +1359,8 @@ a[class*=card]:hover .title {
   display: block;
 }
 .gallery-wrap .img-big-wrap img {
-  height: 450px;
-  width: auto;
+  /*height: 450px;*/
+  width: 100%;
   display: inline-block;
 }
 .gallery-wrap .thumbs-wrap {

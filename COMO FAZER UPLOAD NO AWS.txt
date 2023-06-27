@@ -1,0 +1,71 @@
+token do ecommerce
+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
+=====================
+https://www.youtube.com/watch?v=yMqKhYPNGV0
+===============
+Comando utilizados:
+
+Atualizar o ubuntu
+sudo apt-get update
+
+Clonar repositorio
+git clone https://github.com/yeshwanthlm/django...
+
+Instalar o pip
+sudo apt install python3-pip -y
+
+entra na pasta do arquivo criado
+istala o requiriments.txt
+
+ pip install -r requirements.txt 
+
+
+
+
+ 
+instalar o django
+pip install django
+
+Ver pastas
+dir
+ 
+Entrar na pasta
+cd nome-da-pasta
+
+Comandos Django
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py createsuperuser
+
+***********
+é preciso leberar as portas 8000 e 80 o AWS
+
+INSTANCIA > SEGURANÇA > GRUPOS DE SEGURANÇA
+
+***********
+
+python3 manage.py runserver 0.0.0.0:8000
+
+
+>>>para o site ficar online a app precisa ficar executando em segundo plano na maquina da aws
+
+>>Exibir todos os screens que estao executando
+screen -list
+
+>>Criar screen com um nome
+screen -S nome-do-screen
+
+Reconectar ao screen
+screen -r nome-do-screen
+
+Encerrar screen
+screen -X -S nome-do-screen quit
+
+Sair do screen
+ctrl-A + d
+
+>> Redirecionar a porta 80 para a porta 8080
+sudo /sbin/iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8000
+
+
+>> criando um ip fixo para app 
